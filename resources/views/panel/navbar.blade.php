@@ -13,9 +13,9 @@
       <a class="nav-link" href="/">Dashboard</a>
     </li> 
     --}}
-    <li class="nav-item px-3">
+    {{-- <li class="nav-item px-3">
       <a class="nav-link" href="/sample/dashboard">Samples</a>
-    </li>
+    </li> --}}
   </ul>
   <ul class="nav navbar-nav ml-auto">
     <!--
@@ -63,9 +63,9 @@
     </li>
   </ul>
   
-  <button class="navbar-toggler aside-menu-toggler" type="button">
+  {{-- <button class="navbar-toggler aside-menu-toggler" type="button">
     <span class="navbar-toggler-icon"></span>
-  </button>
+  </button> --}}
 
  <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
   {{ csrf_field() }}

@@ -1,15 +1,15 @@
 <div class="sidebar">
   <nav class="sidebar-nav">
     <ul class="nav">
-      <li class="nav-item">
+      {{-- <li class="nav-item">
         <a class="nav-link" href="/"><i class="icon-speedometer"></i> Dashboard </a>
-      </li>
+      </li> --}}
 
       <li class="nav-title">
-        UI Elements
+        Tienda de Pinturas
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/sample/dashboard"><i class="icon-calculator"></i> Samples</a>
+        <a class="nav-link" href="/Persona"><i class="icon-user "></i> Persona</a>
       </li>
     </ul>
   </nav>

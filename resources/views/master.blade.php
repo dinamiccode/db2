@@ -47,7 +47,7 @@
   <div class="app-body">
     @include('panel.sidebar')
     <!-- Main content -->
-    <main class="main">
+    <main class="main" id="main">
 
       <!-- Breadcrumb -->
       @include('panel.breadcrumb')
@@ -60,7 +60,7 @@
 
   </div>
 
-  @include('panel.footer')
+  {{-- @include('panel.footer') --}}
 
   @include('panel.scripts')
   @yield('myscript')

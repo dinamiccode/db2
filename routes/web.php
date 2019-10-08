@@ -30,6 +30,11 @@ Route::middleware('auth')->group(function() {
 	Route::view('/sample/icons-simple-line', 'samples.simple-line-icons');
 	Route::view('/sample/widgets','samples.widgets');
 	Route::view('/sample/charts','samples.charts');
+
+
+
+	Route::get('Persona','PinturasController@ShowPersona');
+	Route::post('addPersona','PinturasController@addPersona');
 });
 // Section Pages
 Route::view('/sample/error404','errors.404')->name('error404');
