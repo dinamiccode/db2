@@ -2,25 +2,22 @@
   <div>
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <span>Formulario Persona</span>
+        <span>Formulario Producto</span>
       </div>
       <el-form  :model="form" ref="form" label-width="120px" :rules="rules">
         <el-form-item label="Nombre:" prop="nombre">
           <el-input v-model="form.nombre"></el-input>
         </el-form-item>
 
-        <el-form-item label="Apellido:" prop="apellido">
-            <el-input v-model="form.apellido" ></el-input>
-        </el-form-item>
         <el-row :gutter="20">
          <el-col :span="12">
-            <el-form-item label="Telefono:" prop="telefono">
-                <el-input v-model="form.telefono"></el-input>
-            </el-form-item>
+          <el-form-item label="Existencia:" prop="existencia">
+              <el-input v-model="form.existencia" ></el-input>
+          </el-form-item>
          </el-col>
          <el-col :span="12">
-            <el-form-item label="Nit:" prop="nit">
-                <el-input v-model="form.nit"></el-input>
+            <el-form-item label="Precio:" prop="precio">
+                <el-input v-model="form.precio"></el-input>
             </el-form-item>
          </el-col>
         </el-row>
@@ -50,12 +47,12 @@
           width="180">
         </el-table-column>
         <el-table-column
-          prop="lastname"
-          label="Apellido">
+          prop="existencia"
+          label="Existencioa">
         </el-table-column>
         <el-table-column
-          prop="telefono"
-          label="Telefono">
+          prop="price"
+          label="Precio">
         </el-table-column>
         <el-table-column label="Operaciones" width="200">
         <template slot="header" slot-scope="scope">
@@ -92,9 +89,9 @@ export default {
     return {
       form: {
         nombre: "",
-        apellido: "",
-        telefono: "",
-        nit: "",
+        existencia: "",
+        precio: "",
+        
         
       },
       responseData:[],
@@ -112,27 +109,21 @@ export default {
             trigger: "blur"
           }
         ],
-        apellido: [
+        existencia: [
           {
             required: true,
             message: "ingrese dato valido",
             trigger: "blur"
           }
         ],
-        nit: [
+        precio: [
           {
             required: true,
             message: "ingrese dato valido",
             trigger: "blur"
           }
         ],
-        telefono: [
-          {
-            required: true,
-            message: "ingrese dato valido",
-            trigger: "blur"
-          }
-        ]
+        
       },
     };
   },     
@@ -142,16 +133,16 @@ export default {
   methods: {
     onSubmit(form) {
         const axios = require('axios');
-        var url = '/addPersona';
+        var url = '/addProducto';
         this.$refs[form].validate(valid => {
         const h = this.$createElement;
         if (valid) {
             this.fullscreenLoading = true;        
             axios.post(url, {
                 nombre: this.form.nombre,
-                apellido: this.form.apellido,
-                telefono: this.form.telefono,
-                nit : this.form.nit,
+                existencia: this.form.existencia,
+                precio: this.form.precio,
+               
             })
             .then(response => {    
                 // console.log(response.data);        
@@ -166,9 +157,9 @@ export default {
                 this.getPersona();
                 this.fullscreenLoading = false;
                 this.form.nombre= "";
-                this.form.apellido ="";
-                this.form.telefono= "";
-                this.form.nit ="";
+                this.form.existencia ="";
+                this.form.precio= "";
+                
                 }
             })
         }else {
@@ -183,7 +174,7 @@ export default {
     },
     getPersona(){
       
-      var url = 'getPersona';
+      var url = 'getProducto';
       axios.get(url).then(response =>{
         // console.log(response.data);
         this.total = response.data.length;
@@ -194,7 +185,7 @@ export default {
           const config = { headers: {'Content-Type': 'application/json'} };
           const h = this.$createElement;
           this.fullscreenLoading = true;
-          var url = "/deletePersona";
+          var url = "/deleteProducto";
           axios
             .put(url, {
               id: row

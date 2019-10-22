@@ -2,25 +2,19 @@
   <div>
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <span>Formulario Persona</span>
+        <span>Formulario Pregunta</span>
       </div>
       <el-form  :model="form" ref="form" label-width="120px" :rules="rules">
-        <el-form-item label="Nombre:" prop="nombre">
-          <el-input v-model="form.nombre"></el-input>
-        </el-form-item>
-
-        <el-form-item label="Apellido:" prop="apellido">
-            <el-input v-model="form.apellido" ></el-input>
-        </el-form-item>
+        
         <el-row :gutter="20">
          <el-col :span="12">
-            <el-form-item label="Telefono:" prop="telefono">
-                <el-input v-model="form.telefono"></el-input>
-            </el-form-item>
+          <el-form-item label="Descripción:" prop="descripcion">
+              <el-input v-model="form.descripcion" ></el-input>
+          </el-form-item>
          </el-col>
          <el-col :span="12">
-            <el-form-item label="Nit:" prop="nit">
-                <el-input v-model="form.nit"></el-input>
+            <el-form-item label="Tipo:" prop="tipo">
+                <el-input v-model="form.tipo"></el-input>
             </el-form-item>
          </el-col>
         </el-row>
@@ -46,16 +40,12 @@
         </el-table-column>
         <el-table-column
           prop="name"
-          label="Nombre"
-          width="180">
+          label="Descripción"
+          >
         </el-table-column>
         <el-table-column
-          prop="lastname"
-          label="Apellido">
-        </el-table-column>
-        <el-table-column
-          prop="telefono"
-          label="Telefono">
+          prop="tipo"
+          label="Tipo">
         </el-table-column>
         <el-table-column label="Operaciones" width="200">
         <template slot="header" slot-scope="scope">
@@ -91,11 +81,9 @@ export default {
   data() {
     return {
       form: {
-        nombre: "",
-        apellido: "",
-        telefono: "",
-        nit: "",
-        
+        descripcion: "",
+        tipo: "",
+           
       },
       responseData:[],
       pagesize: 10,
@@ -105,34 +93,20 @@ export default {
       fullscreenLoading: false,
       loading: false,
       rules: {
-        nombre: [
+        descripcion: [
           {
             required: true,
             message: "ingrese dato valido",
             trigger: "blur"
           }
         ],
-        apellido: [
+        tipo: [
           {
             required: true,
             message: "ingrese dato valido",
             trigger: "blur"
           }
         ],
-        nit: [
-          {
-            required: true,
-            message: "ingrese dato valido",
-            trigger: "blur"
-          }
-        ],
-        telefono: [
-          {
-            required: true,
-            message: "ingrese dato valido",
-            trigger: "blur"
-          }
-        ]
       },
     };
   },     
@@ -142,16 +116,15 @@ export default {
   methods: {
     onSubmit(form) {
         const axios = require('axios');
-        var url = '/addPersona';
+        var url = '/addPregunta';
         this.$refs[form].validate(valid => {
         const h = this.$createElement;
         if (valid) {
             this.fullscreenLoading = true;        
             axios.post(url, {
-                nombre: this.form.nombre,
-                apellido: this.form.apellido,
-                telefono: this.form.telefono,
-                nit : this.form.nit,
+                descripcion: this.form.descripcion,
+                tipo: this.form.tipo,
+                
             })
             .then(response => {    
                 // console.log(response.data);        
@@ -166,9 +139,9 @@ export default {
                 this.getPersona();
                 this.fullscreenLoading = false;
                 this.form.nombre= "";
-                this.form.apellido ="";
-                this.form.telefono= "";
-                this.form.nit ="";
+                this.form.existencia ="";
+                this.form.precio= "";
+                
                 }
             })
         }else {
@@ -183,7 +156,7 @@ export default {
     },
     getPersona(){
       
-      var url = 'getPersona';
+      var url = 'getPregunta';
       axios.get(url).then(response =>{
         // console.log(response.data);
         this.total = response.data.length;
@@ -194,7 +167,7 @@ export default {
           const config = { headers: {'Content-Type': 'application/json'} };
           const h = this.$createElement;
           this.fullscreenLoading = true;
-          var url = "/deletePersona";
+          var url = "/deletePregunta";
           axios
             .put(url, {
               id: row

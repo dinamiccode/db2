@@ -161,6 +161,18 @@ Vue.use(ElementUI, { locale });
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
 Vue.component('formulario-persona', require('./components/persona.vue'));
+Vue.component('formulario-tipocliente', require('./components/tipoCliente.vue'));
+Vue.component('formulario-producto', require('./components/producto.vue'));
+Vue.component('formulario-pregunta', require('./components/pregunta.vue'));
+Vue.component('formulario-cliente', require('./components/cliente.vue'));
+Vue.component('formulario-encuesta', require('./components/encuesta.vue'));
+Vue.component('formulario-encuestar', require('./components/encuestaR.vue'));
+Vue.component('formulario-respuesta', require('./components/respuesta.vue'));
+Vue.component('formulario-encuestaproducto', require('./components/encuestaproducto.vue'));
+Vue.component('formulario-detalle_expediente', require('./components/detalle_expediente.vue'));
+Vue.component('formulario-factura', require('./components/factura.vue'));
+Vue.component('formulario-dfactura', require('./components/dfactura.vue'));
+Vue.component('formulario-bitacora', require('./components/bitacora.vue'));
 
 const app = new Vue({
     el: '#main'

@@ -2,25 +2,25 @@
   <div>
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <span>Formulario Persona</span>
+        <span>Formulario Cliente</span>
       </div>
       <el-form  :model="form" ref="form" label-width="120px" :rules="rules">
-        <el-form-item label="Nombre:" prop="nombre">
-          <el-input v-model="form.nombre"></el-input>
+        <el-form-item label="Cliente:" prop="cliente">
+          <!-- <el-input v-model="form.cliente"></el-input> -->
+            <el-select  name="idSede" class="vue-select" v-model="form.cliente" placeholder="Seleccione Cliente" style="width:100%;">
+                  <el-option v-for="(item,idx) in dataCliente" :key="idx" :label=" item.name " :value=" item.code "></el-option>
+            </el-select>
         </el-form-item>
 
-        <el-form-item label="Apellido:" prop="apellido">
-            <el-input v-model="form.apellido" ></el-input>
-        </el-form-item>
         <el-row :gutter="20">
          <el-col :span="12">
-            <el-form-item label="Telefono:" prop="telefono">
-                <el-input v-model="form.telefono"></el-input>
-            </el-form-item>
+          <el-form-item label="Telefono:" prop="telefono">
+              <el-input v-model="form.telefono" ></el-input>
+          </el-form-item>
          </el-col>
          <el-col :span="12">
-            <el-form-item label="Nit:" prop="nit">
-                <el-input v-model="form.nit"></el-input>
+            <el-form-item label="Expediente:" prop="expediente">
+                <el-input v-model="form.expediente"></el-input>
             </el-form-item>
          </el-col>
         </el-row>
@@ -50,12 +50,12 @@
           width="180">
         </el-table-column>
         <el-table-column
-          prop="lastname"
-          label="Apellido">
-        </el-table-column>
-        <el-table-column
           prop="telefono"
           label="Telefono">
+        </el-table-column>
+        <el-table-column
+          prop="expediente"
+          label="Expediente">
         </el-table-column>
         <el-table-column label="Operaciones" width="200">
         <template slot="header" slot-scope="scope">
@@ -91,35 +91,23 @@ export default {
   data() {
     return {
       form: {
-        nombre: "",
-        apellido: "",
+        cliente: "",
         telefono: "",
-        nit: "",
+        expediente: "",
+        
         
       },
       responseData:[],
+      cliente:"seleccione",
       pagesize: 10,
       total: 0,
       currentPage: 1,
       search: '',
+      dataCliente:[],
       fullscreenLoading: false,
       loading: false,
       rules: {
-        nombre: [
-          {
-            required: true,
-            message: "ingrese dato valido",
-            trigger: "blur"
-          }
-        ],
-        apellido: [
-          {
-            required: true,
-            message: "ingrese dato valido",
-            trigger: "blur"
-          }
-        ],
-        nit: [
+        cliente: [
           {
             required: true,
             message: "ingrese dato valido",
@@ -132,26 +120,35 @@ export default {
             message: "ingrese dato valido",
             trigger: "blur"
           }
-        ]
+        ],
+        expediente: [
+          {
+            required: true,
+            message: "ingrese dato valido",
+            trigger: "blur"
+          }
+        ],
+        
       },
     };
   },     
   mounted() {
     this.getPersona();
+    this.getdataClientes();
   },
   methods: {
     onSubmit(form) {
         const axios = require('axios');
-        var url = '/addPersona';
+        var url = '/addCliente';
         this.$refs[form].validate(valid => {
         const h = this.$createElement;
         if (valid) {
             this.fullscreenLoading = true;        
             axios.post(url, {
-                nombre: this.form.nombre,
-                apellido: this.form.apellido,
+                persona: this.form.cliente,
                 telefono: this.form.telefono,
-                nit : this.form.nit,
+                expediente: this.form.expediente,
+               
             })
             .then(response => {    
                 // console.log(response.data);        
@@ -165,10 +162,10 @@ export default {
                 });
                 this.getPersona();
                 this.fullscreenLoading = false;
-                this.form.nombre= "";
-                this.form.apellido ="";
-                this.form.telefono= "";
-                this.form.nit ="";
+                this.form.cliente= "";
+                this.form.telefono ="";
+                this.form.expediente= "";
+                
                 }
             })
         }else {
@@ -183,18 +180,25 @@ export default {
     },
     getPersona(){
       
-      var url = 'getPersona';
+      var url = 'getCliente';
       axios.get(url).then(response =>{
         // console.log(response.data);
         this.total = response.data.length;
         this.responseData = response.data;
       })
     },
+    getdataClientes(){
+      
+      var url = 'getPersona';
+      axios.get(url).then(response =>{
+        this.dataCliente = response.data;
+      })
+    },
     handleDelete(row) {
           const config = { headers: {'Content-Type': 'application/json'} };
           const h = this.$createElement;
           this.fullscreenLoading = true;
-          var url = "/deletePersona";
+          var url = "/deleteCliente";
           axios
             .put(url, {
               id: row

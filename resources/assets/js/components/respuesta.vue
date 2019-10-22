@@ -2,25 +2,27 @@
   <div>
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <span>Formulario Persona</span>
+        <span>Formulario Respuestas</span>
       </div>
       <el-form  :model="form" ref="form" label-width="120px" :rules="rules">
-        <el-form-item label="Nombre:" prop="nombre">
-          <el-input v-model="form.nombre"></el-input>
+        <el-form-item label="Encuesta:" prop="encuestaR">
+          <!-- <el-input v-model="form.cliente"></el-input> -->
+            <el-select  name="idSede" class="vue-select" v-model="form.encuestaR" placeholder="Seleccione" style="width:100%;">
+                  <el-option v-for="(item,idx) in dataClientes" :key="idx" :label=" item.name " :value=" item.code "></el-option>
+            </el-select>
         </el-form-item>
 
-        <el-form-item label="Apellido:" prop="apellido">
-            <el-input v-model="form.apellido" ></el-input>
-        </el-form-item>
         <el-row :gutter="20">
          <el-col :span="12">
-            <el-form-item label="Telefono:" prop="telefono">
-                <el-input v-model="form.telefono"></el-input>
-            </el-form-item>
+          <el-form-item label="Pregunta:" prop="pregunta">
+              <el-select  name="idSede" class="vue-select" v-model="form.pregunta" placeholder="Seleccione" style="width:100%;">
+                  <el-option v-for="(item,idx) in dataCliente" :key="idx" :label=" item.name " :value=" item.code "></el-option>
+            </el-select>
+          </el-form-item>
          </el-col>
          <el-col :span="12">
-            <el-form-item label="Nit:" prop="nit">
-                <el-input v-model="form.nit"></el-input>
+            <el-form-item label="Respuesta:" prop="respuesta">
+                <el-input v-model="form.respuesta"></el-input>
             </el-form-item>
          </el-col>
         </el-row>
@@ -46,16 +48,8 @@
         </el-table-column>
         <el-table-column
           prop="name"
-          label="Nombre"
-          width="180">
-        </el-table-column>
-        <el-table-column
-          prop="lastname"
-          label="Apellido">
-        </el-table-column>
-        <el-table-column
-          prop="telefono"
-          label="Telefono">
+          label="Encuesta"
+          >
         </el-table-column>
         <el-table-column label="Operaciones" width="200">
         <template slot="header" slot-scope="scope">
@@ -64,13 +58,13 @@
             size="mini"
             placeholder="Buscar"/>
         </template>
-        <template slot-scope="scope">
+        <!-- <template slot-scope="scope">
           <el-button
             size="mini"
             type="danger"
             @click="handleDelete(scope.row.code)"
           >Inactivar</el-button>
-        </template>
+        </template> -->
       </el-table-column>
       </el-table>
        <div style="text-align: left;margin-top: 30px;">
@@ -91,67 +85,66 @@ export default {
   data() {
     return {
       form: {
-        nombre: "",
-        apellido: "",
-        telefono: "",
-        nit: "",
+        encuestaR: "",
+        pregunta: "",
+        respuesta: "",
+        
         
       },
       responseData:[],
+      cliente:"seleccione",
       pagesize: 10,
       total: 0,
       currentPage: 1,
       search: '',
+      dataCliente:[],
+      dataClientes:[],
       fullscreenLoading: false,
       loading: false,
       rules: {
-        nombre: [
+        encuestaR: [
           {
             required: true,
             message: "ingrese dato valido",
             trigger: "blur"
           }
         ],
-        apellido: [
+        pregunta: [
           {
             required: true,
             message: "ingrese dato valido",
             trigger: "blur"
           }
         ],
-        nit: [
+        respuesta: [
           {
             required: true,
             message: "ingrese dato valido",
             trigger: "blur"
           }
         ],
-        telefono: [
-          {
-            required: true,
-            message: "ingrese dato valido",
-            trigger: "blur"
-          }
-        ]
+        
       },
     };
   },     
   mounted() {
     this.getPersona();
+    this.getdataPregunta();
+    this.getdataClientes();
   },
   methods: {
     onSubmit(form) {
         const axios = require('axios');
-        var url = '/addPersona';
+        var url = '/addRespuesta';
         this.$refs[form].validate(valid => {
         const h = this.$createElement;
         if (valid) {
             this.fullscreenLoading = true;        
             axios.post(url, {
-                nombre: this.form.nombre,
-                apellido: this.form.apellido,
-                telefono: this.form.telefono,
-                nit : this.form.nit,
+                encuestaR: this.form.encuestaR,
+                pregunta: this.form.pregunta,
+                respuesta: this.form.respuesta,
+               
             })
             .then(response => {    
                 // console.log(response.data);        
@@ -165,10 +158,10 @@ export default {
                 });
                 this.getPersona();
                 this.fullscreenLoading = false;
-                this.form.nombre= "";
-                this.form.apellido ="";
-                this.form.telefono= "";
-                this.form.nit ="";
+                this.form.encuestaR= "";
+                this.form.pregunta ="";
+                this.form.respuesta= "";
+                
                 }
             })
         }else {
@@ -183,18 +176,32 @@ export default {
     },
     getPersona(){
       
-      var url = 'getPersona';
+      var url = 'getRespuesta';
       axios.get(url).then(response =>{
         // console.log(response.data);
         this.total = response.data.length;
         this.responseData = response.data;
       })
     },
+    getdataPregunta(){
+      
+      var url = 'getEncuestaR';
+      axios.get(url).then(response =>{
+        this.dataClientes = response.data;
+      })
+    },
+    getdataClientes(){
+      
+      var url = 'getPregunta';
+      axios.get(url).then(response =>{
+        this.dataCliente = response.data;
+      })
+    },
     handleDelete(row) {
           const config = { headers: {'Content-Type': 'application/json'} };
           const h = this.$createElement;
           this.fullscreenLoading = true;
-          var url = "/deletePersona";
+          var url = "/deleteCliente";
           axios
             .put(url, {
               id: row

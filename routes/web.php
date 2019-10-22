@@ -15,7 +15,7 @@ Auth::routes();
 /* CoreUI templates */
 
 Route::middleware('auth')->group(function() {
-	Route::view('/', 'panel.blank');
+	Route::view('/', 'samples.charts');
 	// Section CoreUI elements
 	Route::view('/sample/dashboard','samples.dashboard');
 	Route::view('/sample/buttons','samples.buttons');
@@ -33,8 +33,83 @@ Route::middleware('auth')->group(function() {
 
 
 
+	// Persona
 	Route::get('Persona','PinturasController@ShowPersona');
 	Route::post('addPersona','PinturasController@addPersona');
+	Route::get('getPersona','PinturasController@getPersona');
+	Route::put('deletePersona','PinturasController@deletePersona');
+
+	// Tipo Cliente
+	Route::get('tcliente','PinturasController@ShowtCliente');
+	Route::post('addTCliente','PinturasController@addTCliente');
+	Route::get('getTCliente','PinturasController@getTCliente');
+	Route::put('deleteTCliente','PinturasController@deleteTCliente');
+	
+	// Producto
+	Route::get('producto','PinturasController@ShowProducto');
+	Route::post('addProducto','PinturasController@addProducto');
+	Route::get('getProducto','PinturasController@getProducto');
+	Route::put('deleteProducto','PinturasController@deleteProducto');
+	
+	// Pregunta
+	Route::get('pregunta','PinturasController@ShowPregunta');
+	Route::post('addPregunta','PinturasController@addPregunta');
+	Route::get('getPregunta','PinturasController@getPregunta');
+	Route::put('deletePregunta','PinturasController@deletePregunta');
+	
+	// Clientes
+	Route::get('cliente','PinturasController@ShowCliente');
+	Route::post('addCliente','PinturasController@addCliente');
+	Route::get('getCliente','PinturasController@getCliente');
+	Route::put('deleteCliente','PinturasController@deleteCliente');
+	
+	// Encuesta
+	Route::get('encuesta','PinturasController@ShowEncuesta');
+	Route::post('addEncuesta','PinturasController@addEncuesta');
+	Route::get('getEncuesta','PinturasController@getEncuesta');
+	Route::put('deleteEncuesta','PinturasController@deleteEncuesta');
+	
+	// Encuesta Respondida
+	Route::get('encuestaR','PinturasController@ShowEncuestaR');
+	Route::post('addEncuestaR','PinturasController@addEncuestaR');
+	Route::get('getEncuestaR','PinturasController@getEncuestaR');
+	Route::put('deleteEncuestaR','PinturasController@deleteEncuestaR');
+	
+	// Respuestas
+	Route::get('respuesta','PinturasController@ShowRespuesta');
+	Route::post('addRespuesta','PinturasController@addRespuesta');
+	Route::get('getRespuesta','PinturasController@getRespuesta');
+	Route::put('deleteRespuesta','PinturasController@deleteRespuesta');
+	
+	// Encuesta Producto
+	Route::get('eproducto','PinturasController@Showeproducto');
+	Route::post('addeproducto','PinturasController@addeproducto');
+	Route::get('geteproducto','PinturasController@geteproducto');
+	Route::put('deleteeproducto','PinturasController@deleteeproducto');
+	
+	// Detalle Expediente
+	Route::get('dexpediente','PinturasController@Showdexpediente');
+	Route::post('adddexpediente','PinturasController@adddexpediente');
+	Route::get('getdexpediente','PinturasController@getdexpediente');
+	
+	// facturas
+	Route::get('factura','PinturasController@Showfactura');
+	Route::post('addfactura','PinturasController@addfactura');
+	Route::get('getfactura','PinturasController@getfactura');
+	
+	// Detalle Factura
+	Route::get('dFactura','PinturasController@ShowdFactura');
+	Route::post('adddFactura','PinturasController@adddFactura');
+	Route::get('getdFactura','PinturasController@getdFactura');
+	
+	// Bitácora
+	Route::get('bitacora','PinturasController@Showbitacora');
+	Route::get('getbitacora','PinturasController@getbitacora');
+
+	Route::get('getProductoChats','PinturasController@getProductoChats');
+
+
+	//------------------------------------------------------------
 });
 // Section Pages
 Route::view('/sample/error404','errors.404')->name('error404');

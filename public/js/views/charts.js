@@ -1,196 +1,85 @@
-$(function (){
+$(function (  ){
   'use strict';
 
-  var randomScalingFactor = function(){ return Math.round(Math.random()*100)};
-  var lineChartData = {
-    labels : ['January','February','March','April','May','June','July'],
-    datasets : [
-      {
-        label: 'My First dataset',
-        backgroundColor : 'rgba(220,220,220,0.2)',
-        borderColor : 'rgba(220,220,220,1)',
-        pointBackgroundColor : 'rgba(220,220,220,1)',
-        pointBorderColor : '#fff',
-        data : [randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor()]
-      },
-      {
-        label: 'My Second dataset',
-        backgroundColor : 'rgba(151,187,205,0.2)',
-        borderColor : 'rgba(151,187,205,1)',
-        pointBackgroundColor : 'rgba(151,187,205,1)',
-        pointBorderColor : '#fff',
-        data : [randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor()]
-      }
-    ]
-  }
+  var charts = {
+		init: function () {
+			// -- Set new default font family and font color to mimic Bootstrap's default styling
+			Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+			Chart.defaults.global.defaultFontColor = '#292b2c';
 
-  var ctx = document.getElementById('canvas-1');
-  var chart = new Chart(ctx, {
-    type: 'line',
-    data: lineChartData,
-    options: {
-      responsive: true
-    }
-  });
+			this.ajaxGetPostMonthlyData();
 
+		},
 
-  var randomScalingFactor = function(){ return Math.round(Math.random()*100)};
-  var barChartData = {
-    labels : ['January','February','March','April','May','June','July'],
-    datasets : [
-      {
-        backgroundColor : 'rgba(220,220,220,0.5)',
-        borderColor : 'rgba(220,220,220,0.8)',
-        highlightFill: 'rgba(220,220,220,0.75)',
-        highlightStroke: 'rgba(220,220,220,1)',
-        data : [randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor()]
-      },
-      {
-        backgroundColor : 'rgba(151,187,205,0.5)',
-        borderColor : 'rgba(151,187,205,0.8)',
-        highlightFill : 'rgba(151,187,205,0.75)',
-        highlightStroke : 'rgba(151,187,205,1)',
-        data : [randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor()]
-      }
-    ]
-  }
-  var ctx = document.getElementById('canvas-2');
-  var chart = new Chart(ctx, {
-    type: 'bar',
-    data: barChartData,
-    options: {
-      responsive: true
-    }
-  });
+		ajaxGetPostMonthlyData: function () {
+			var urlPath =  'http://' + window.location.hostname + '/getProductoChats';
+			var request = $.ajax( {
+				method: 'GET',
+				url: urlPath
+		} );
 
+			request.done( function ( response ) {
+				console.log( response );
+				charts.createCompletedJobsChart( response );
+			});
+		},
 
-  var doughnutData = {
-    labels: [
-      'Red',
-      'Green',
-      'Yellow'
-    ],
-    datasets: [{
-      data: [300, 50, 100],
-      backgroundColor: [
-        '#FF6384',
-        '#36A2EB',
-        '#FFCE56'
-      ],
-      hoverBackgroundColor: [
-        '#FF6384',
-        '#36A2EB',
-        '#FFCE56'
-      ]
-    }]
-  };
-  var ctx = document.getElementById('canvas-3');
-  var chart = new Chart(ctx, {
-    type: 'doughnut',
-    data: doughnutData,
-    options: {
-      responsive: true
-    }
-  });
+		/**
+		 * Created the Completed Jobs Chart
+		 */
+		createCompletedJobsChart: function ( response ) {
 
+			var ctx = document.getElementById("myAreaChart");
+			var myLineChart = new Chart(ctx, {
+				type: 'line',
+				data: {
+					labels: response.months, // The response got from the ajax request containing all month names in the database
+					datasets: [{
+						label: "Sessions",
+						lineTension: 0.3,
+						backgroundColor: "rgba(2,117,216,0.2)",
+						borderColor: "rgba(2,117,216,1)",
+						pointRadius: 5,
+						pointBackgroundColor: "rgba(2,117,216,1)",
+						pointBorderColor: "rgba(255,255,255,0.8)",
+						pointHoverRadius: 5,
+						pointHoverBackgroundColor: "rgba(2,117,216,1)",
+						pointHitRadius: 20,
+						pointBorderWidth: 2,
+						data: response.post_count_data // The response got from the ajax request containing data for the completed jobs in the corresponding months
+					}],
+				},
+				options: {
+					scales: {
+						xAxes: [{
+							time: {
+								unit: 'date'
+							},
+							gridLines: {
+								display: false
+							},
+							ticks: {
+								maxTicksLimit: 7
+							}
+						}],
+						yAxes: [{
+							ticks: {
+								min: 0,
+								max: response.max, // The response got from the ajax request containing max limit for y axis
+								maxTicksLimit: 5
+							},
+							gridLines: {
+								color: "rgba(0, 0, 0, .125)",
+							}
+						}],
+					},
+					legend: {
+						display: false
+					}
+				}
+			});
+		}
+	};
 
-  var radarChartData = {
-    labels: ['Eating', 'Drinking', 'Sleeping', 'Designing', 'Coding', 'Cycling', 'Running'],
-    datasets: [
-      {
-        label: 'My First dataset',
-        backgroundColor: 'rgba(220,220,220,0.2)',
-        borderColor: 'rgba(220,220,220,1)',
-        pointBackgroundColor: 'rgba(220,220,220,1)',
-        pointBorderColor: '#fff',
-        pointHighlightFill: '#fff',
-        pointHighlightStroke: 'rgba(220,220,220,1)',
-        data: [65,59,90,81,56,55,40]
-      },
-      {
-        label: 'My Second dataset',
-        backgroundColor: 'rgba(151,187,205,0.2)',
-        borderColor: 'rgba(151,187,205,1)',
-        pointBackgroundColor: 'rgba(151,187,205,1)',
-        pointBorderColor: '#fff',
-        pointHighlightFill: '#fff',
-        pointHighlightStroke: 'rgba(151,187,205,1)',
-        data: [28,48,40,19,96,27,100]
-      }
-    ]
-  };
-  var ctx = document.getElementById('canvas-4');
-  var chart = new Chart(ctx, {
-    type: 'radar',
-    data: radarChartData,
-    options: {
-      responsive: true
-    }
-  });
-
-
-  var pieData = {
-    labels: [
-      'Red',
-      'Green',
-      'Yellow'
-    ],
-    datasets: [{
-      data: [300, 50, 100],
-      backgroundColor: [
-        '#FF6384',
-        '#36A2EB',
-        '#FFCE56'
-      ],
-      hoverBackgroundColor: [
-        '#FF6384',
-        '#36A2EB',
-        '#FFCE56'
-      ]
-    }]
-  };
-  var ctx = document.getElementById('canvas-5');
-  var chart = new Chart(ctx, {
-    type: 'pie',
-    data: pieData,
-    options: {
-      responsive: true
-    }
-  });
-
-
-  var polarData = {
-    datasets: [{
-      data: [
-        11,
-        16,
-        7,
-        3,
-        14
-      ],
-      backgroundColor: [
-        '#FF6384',
-        '#4BC0C0',
-        '#FFCE56',
-        '#E7E9ED',
-        '#36A2EB'
-      ],
-      label: 'My dataset' // for legend
-    }],
-    labels: [
-      'Red',
-      'Green',
-      'Yellow',
-      'Grey',
-      'Blue'
-    ]
-  };
-  var ctx = document.getElementById('canvas-6');
-  var chart = new Chart(ctx, {
-    type: 'polarArea',
-    data: polarData,
-    options: {
-      responsive: true
-    }
-  });
+	charts.init();
 });

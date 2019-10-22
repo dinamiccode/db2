@@ -1,4 +1,4 @@
-@extends('samples')
+@extends('master')
 @section('content')
 <div class="container-fluid">
     <div class="animated fadeIn">
